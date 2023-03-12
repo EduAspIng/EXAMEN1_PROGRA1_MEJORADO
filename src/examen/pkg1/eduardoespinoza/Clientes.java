@@ -16,28 +16,28 @@ public class Clientes {
     static int[] NEntradas = new int[10];
     static int limite = 0;
     static String[] Campo = new String[10];
-    static int[] PEntrada=new int[10]; 
-    static int[] SubTotal=new int[10];
-    static int[] Total=new int[10];
-    static int Adicional=1000;   
-    static int Acumulador=0; 
-    static int Contador=0;
-    static int Cantidad_SolNS=0;
-    static int Cantidad_SombraEO=0;
-    static int Cantidad_Preferenciales=0;
-    static int AcumuladorSol=0;
-    static int AcumuladorSombra=0;
-    static int AcumuladorPreferencial=0;
-        
+    static int[] PEntrada = new int[10];
+    static int[] SubTotal = new int[10];
+    static int[] Total = new int[10];
+    static int Adicional = 1000;
+    static int Cantidad_SolNS = 0;
+    static int Cantidad_SombraEO = 0;
+    static int Cantidad_Preferenciales = 0;
+    static int AcumuladorSol = 0;
+    static int AcumuladorSombra = 0;
+    static int AcumuladorPreferencial = 0;
+    static char continuar = ' ';
+
     public Clientes() {
     }
 
     public static void Incluir_Compradores() {
         Scanner leer = new Scanner(System.in);
-        char continuar = ' ';
+
         do {
-            if (limite > 10) {//limite para los datos ingresados
+            if (limite >= 10) {//limite para los datos ingresados, y es '>9' o '>=10' recordando que los arreglos inician desde 0
                 System.out.println("No se puede admitir mas datos");
+                break;//Lista llena
             } else {//Ingresar los datos
                 System.out.println("Ingrese el #Factura: ");
                 NFactura[limite] = leer.nextInt();
@@ -59,15 +59,18 @@ public class Clientes {
                 if (NEntradas[limite] >= 4) {
                     System.out.println("No puedes comprar mas de 4 entradas");
                 }
-
+                Cobro_Compradores();//Hasta que termine este metodo...
+                Imprimir_Recibo();//..realice este
                 limite++;
-                System.out.println("¿Desea agregar otro estudiante? Si(s)   No(n)");
+                System.out.println("¿Desea agregar otro cliente? Si(s)   No(n)");
                 continuar = leer.next().charAt(0);
+
             }
-        } while (continuar!= 'n');
-                    
+        } while (continuar != 'n');
+
     }
-/*El sistema deberá procesar el precio por entrada y el nombre de la localidad, en base a lo 
+
+    /*El sistema deberá procesar el precio por entrada y el nombre de la localidad, en base a lo 
 siguiente:
 • Si la localidad es 1 (Sol Norte/Sur) el precio por entrada será de 10500 colones y el 
 nombre de la localidad será “Sol Norte/Sur”.
@@ -80,36 +83,52 @@ cargos por servicios (1000 colones adicionales por entrada) y el total a pagar.
 Recordar deberá procesar también los datos para las estadísticas (cantidad de entradas por 
 cada una de las localidades y el Acumulado de dinero por cada localidad (el acumulado de este 
 dinero no deberá contemplar los cargos por servicios)*/
-     
     public static void Cobro_Compradores() {//Factura de la entrada
-          
-     if (Localidad[limite]==1){PEntrada[limite]=10500;}
-     if (Localidad[limite]==2){PEntrada[limite]=20500;}
-     if (Localidad[limite]==3){PEntrada[limite]=25500;}
-     SubTotal[limite]=PEntrada[limite]*NEntradas[limite];
-     Total[limite]=SubTotal[limite]+Adicional;
-     //Acumulador
-     if(Localidad[limite] == 1){AcumuladorSol =Total[limite]+Acumulador;}
-     if(Localidad[limite] == 2){AcumuladorSombra=Total[limite]+Acumulador;}
-     if(Localidad[limite] == 3){AcumuladorPreferencial=Total[limite]+Acumulador;}
-     //Contador
-        if(Localidad[limite] == 1){for (int i = 0; i <Localidad[limite]; i++) {
-            Cantidad_SolNS = Contador+NEntradas[limite];      
-            }
-        if(Localidad[limite] == 2){for (int i = 0; i <Localidad[limite]; i++) {
-            Cantidad_SombraEO = Contador+NEntradas[limite];      
-            }
-        if(Localidad[limite] == 1){for (int i = 0; i <Localidad[limite]; i++) {
-            Cantidad_Preferenciales = Contador+NEntradas[limite];      
-            }
-}
-     } 
+
+        if (Localidad[limite] == 1) {
+            PEntrada[limite] = 10500;
         }
+
+        if (Localidad[limite] == 2) {
+            PEntrada[limite] = 20500;
+        }
+
+        if (Localidad[limite] == 3) {
+            PEntrada[limite] = 25500;
+        }
+
+        SubTotal[limite] = PEntrada[limite] * NEntradas[limite];
+        Total[limite] = SubTotal[limite] + Adicional;
+        //Acumulador
+        if (Localidad[limite] == 1) {
+            AcumuladorSol += Total[limite];
+        }
+        if (Localidad[limite] == 2) {
+            AcumuladorSombra += Total[limite];
+        }
+        if (Localidad[limite] == 3) {
+            AcumuladorPreferencial += Total[limite];
+        }
+        //Contador
+        if (Localidad[limite] == 1) {
+            Cantidad_SolNS++;//Cuenta las  cantidades
+        }
+        if (Localidad[limite] == 2) {
+            Cantidad_SombraEO++;
+        }
+
+        if (Localidad[limite] == 3) {
+            Cantidad_Preferenciales++;
+        }
+
     }
-    public static void Imprimir_Recibo(){
-        System.out.println("#Factura: "+NFactura[limite]+"\n"+"Cedula: "+Cedula[limite]+"\n"+"Nombre del comprador: "+Nombre[limite]+"\n"+"Localidad: "+Campo[limite]+"\n"+"Cantidad de entradas: "+NEntradas[limite]+"\n"+"Subtotal: "+SubTotal[limite]+"\n"+"Cargos por servicios: "+Adicional+"\n"+"Total a pagar: "+Total[limite]);
-        System.out.println("    Entradas Sol: "+Cantidad_SolNS+"    Entradas sombra: "+Cantidad_SombraEO+"    Entradas preferenciales: "+Cantidad_Preferenciales+"\n"+"Dinero acumulado sol: "+AcumuladorSol+"Dinero acumulado sombra: "+AcumuladorSombra+"Dinero acumulado preferencial: "+AcumuladorPreferencial);
+
+    public static void Imprimir_Recibo() {
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println("#Factura: " + NFactura[i] + "\n" + "Cedula: " + Cedula[i] + "\n" + "Nombre del comprador: " + Nombre[i] + "\n" + "Localidad: " + Campo[i] + "\n" + "Cantidad de entradas: " + NEntradas[i] + "\n" + "Subtotal: " + SubTotal[i] + "\n" + "Cargos por servicios: " + Adicional + "\n" + "Total a pagar: " + Total[i]);
+            System.out.println("Entradas Sol: " + Cantidad_SolNS + "\n" + "Entradas sombra: " + Cantidad_SombraEO + "\n" + "Entradas preferenciales: " + Cantidad_Preferenciales + "\n" + "Dinero acumulado sol: " + AcumuladorSol + "\n" + "Dinero acumulado sombra: " + AcumuladorSombra + "\n" + "Dinero acumulado preferencial: " + AcumuladorPreferencial);
+        }
+
     }
-            }
-        
-        
+}

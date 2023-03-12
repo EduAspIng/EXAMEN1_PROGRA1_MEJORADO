@@ -1,14 +1,15 @@
-//Eduardo José Espinoza Rodríguez
+/*Eduardo José Espinoza Rodríguez EXAMEN MEJORADO, 
+muchas gracias profe por la oportunidad. Espero le agrade esta mejora*/
 package examen.pkg1.eduardoespinoza;
 import java.util.Scanner;
 
 public class Examen1EduardoEspinoza {
     Scanner leer = new Scanner(System.in);
     public static void main(String[] args) {
-        System.out.println(" Partido del día 5 de Noviembre 2018");
+        System.out.println("Partido 5/11/2018");
         Clientes.Incluir_Compradores();
-        Clientes.Cobro_Compradores();
-        Clientes.Imprimir_Recibo();
+        new Consultar_Factura().setVisible(true);//Al no incluir mas clientes, se abrira una ventana para mostrar cuantas personas optaron por cierta localidad
+        
                 
         
     }
